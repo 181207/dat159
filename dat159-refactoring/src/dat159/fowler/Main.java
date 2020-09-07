@@ -7,8 +7,8 @@ public class Main {
 	public static void main(String[] args) {
 		Customer c1 = new Customer("Karl");
 		
-		Movie m1 = new Movie("Kapteinen", Movie.CHILDRENS);
-		Movie m2 = new Movie("Hesten", Movie.CHILDRENS);
+		Movie m1 = new Regular("Kapteinen");
+		Movie m2 = new Childrens("Hesten");
 		
 		//renting moving m1 for 5 days
 		Rental r1 = new Rental(m1, 5);
