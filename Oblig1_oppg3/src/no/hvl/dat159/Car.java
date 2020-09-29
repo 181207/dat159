@@ -1,31 +1,15 @@
 package no.hvl.dat159;
 
+//If you "pull up" the method dobbeltAntallHjul my Junit test will fail. 
+//the return value will change since this hjul() method is private and will 
+//not be visible from Vehicle class. It will therefor use its own hjul() method.
 public class Car extends Vehicle {
-	private int numberOfDoors;
-	private int seats;
-	private int wheels;
-
-	
-	public Car() {
-		super();
-		this.numberOfDoors = 4;
+	private int hjul(){
+		return 4;
 	}
 	
-	public Car( int seats, int wheels, int numberOfDoors) {
-		super(seats,wheels);
-		this.numberOfDoors = numberOfDoors;
-	}
-
-	public int getNumberOfDoors() {
-		return numberOfDoors;
-	}
-
-	public void setNumberOfDoors(int numberOfDoors) {
-		this.numberOfDoors = numberOfDoors;
-	}
-	
-	public double seatsPerWheel() {
-		return this.getWheels() / this.getSeats();
+	public int dobbeltAntallHjul() {
+		return hjul() * 2;
 	}
 
 }
