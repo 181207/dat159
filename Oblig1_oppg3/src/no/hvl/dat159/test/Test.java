@@ -14,10 +14,10 @@ public class Test extends TestCase {
    }
 
    // test method to add two values
+   // Supposed to fail after pulling up the method dobbeltAntallhjul from subclasses
    public void testAdd(){
       int carResult = car.dobbeltAntallHjul();
       int mcResult = mc.dobbeltAntallHjul();
-      
       
       assertTrue(carResult == 8);
       assertTrue(mcResult == 4);
