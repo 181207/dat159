@@ -41,7 +41,7 @@ public class TCPServerSSLRSA {
 		}
 	}
 	
-	public void socketlistener() throws NoSuchAlgorithmException, NoSuchPaddingException {
+	public void socketlistener() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, SignatureException {
 		
 		try {
 			
@@ -77,7 +77,9 @@ public class TCPServerSSLRSA {
 		}
 	}
 	
-	private boolean checkMessageForValidity(String messageandsignature, PublicKey publickey) {
+
+	
+	private boolean checkMessageForValidity(String messageandsignature, PublicKey publickey) throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException, SignatureException {
 		
 		if(messageandsignature.startsWith("GET /")) {
 			messageandsignature = messageandsignature.replace("GET /", "");
@@ -89,8 +91,10 @@ public class TCPServerSSLRSA {
 		String[] tokens = messageandsignature.trim().split("-");
 		String message = tokens[0].replace("%20", " ");
 		String signatureinhex = tokens[1];
-		
+		byte[] digitalSignature = DigitalSignature.getEncodedBinary(signatureinhex);
 		// implement me - verify signature and send the result
+		String algorithm = DigitalSignature.SIGNATURE_SHA256WithRSA;
+		isValid = DigitalSignature.verify(message, digitalSignature, publickey, algorithm);
 		
 		return isValid;
 		
@@ -99,17 +103,18 @@ public class TCPServerSSLRSA {
 	
 	private PublicKey getPublicKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
 		
-		String certpath = "specify certificate path here";		// extract public key from the certificate file
+		String certpath = "mykeys/tcpexample.cer";		// extract public key from the certificate file
 		
 		return Certificates.getPublicKey(certpath);
 	}
 	
-	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException {
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, SignatureException, InvalidKeyException {
 		// set the keystore dynamically using the system property
-		
+		System.setProperty("javax.net.ssl.keyStore", "mykeys/tcp_keystore");
+		System.setProperty("javax.net.ssl.keyStorePassword", "password");
 		// implement me
 		
-		TCPServerSSLRSA tcpserver = new TCPServerSSLRSA(ServerConfig.PORT);
+		TCPServerSSLRSA tcpserver = new TCPServerSSLRSA(ServerConfig.S_PORT);
 		
 		// start the server and let it run forever
 		while(true) {
