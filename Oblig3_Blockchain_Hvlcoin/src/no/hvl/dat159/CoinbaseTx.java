@@ -24,11 +24,13 @@ public class CoinbaseTx {
 	/* --------------------------------------------------------------------- */
 
 	public CoinbaseTx(int blockHeight, String message, String walletAddress) {
-		//TODO
+		this.blockHeight = blockHeight;
+		this.message = message;
+		this.output = new Output(Blockchain.BLOCK_REWARD,walletAddress);
 	}
 	
 	public boolean isValid(UtxoMap utxoMap) {
-		//TODO
+		//TODO		
 		return true;
 	}
 
@@ -44,6 +46,7 @@ public class CoinbaseTx {
 	 *	The transaction hash (= a unique txid) as a hexadecimal String. 
 	 */
 	public String getTxId() {
+		
 		//TODO
 		return null;
 	}

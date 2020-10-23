@@ -4,10 +4,10 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-/**
- * 
- */
+import no.hvl.dat159.util.SignatureUtil;
+
 public class Transaction {
 	
 	private List<Input> inputs = new ArrayList<>();
@@ -26,22 +26,34 @@ public class Transaction {
 		this.senderPublicKey = senderPublicKey;
 	}
 	
-	/**
-	 * 
-	 */
 	public void signTxUsing(PrivateKey privateKey) {
-		//TODO
+		SignatureUtil.signWithDSA(privateKey, inputs.toString());
 	}
 
-	/**
-	 * 
-	 */
 	public boolean isValid(UtxoMap utxoMap) {
+		//Matching the public key with the address of the referenced output
+		//Checking that the signature is valid
 	    //TODO
-	    //None of the data must be null 
-        //Inputs or outputs cannot be empty
+		boolean valid = false;
+		if (inputs==null || outputs==null || senderPublicKey==null || signature==null) {
+			return false;
+		}
+		if (inputs.isEmpty() || outputs.isEmpty()) {
+			return false;
+		}
 	    //No outputs can be zero or negative
+		for (Output output : outputs) {
+			if (output.getValue() <= 0){
+				return false;
+			}
+		}
 	    //All inputs must exist in the UTXO-set
+		for (Input input : inputs) {
+			Set set = utxoMap.getAllUtxos();
+			if (!set.contains(input)) {
+				return false;
+			}
+		}
 	    //All inputs must belong to the sender of this transaction
         //No inputs can be zero or negative
         //The list of inputs must not contain duplicates
@@ -50,6 +62,7 @@ public class Transaction {
         //The signature must belong to the sender and be valid
         //The transaction hash must be correct
 	    return true;
+		
 	}
 	
 	/**

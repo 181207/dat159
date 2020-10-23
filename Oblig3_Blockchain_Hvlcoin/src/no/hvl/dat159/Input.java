@@ -6,7 +6,7 @@ package no.hvl.dat159;
 public class Input {
 	
 	private String prevTxId;
-	private int prevOutputIndex; // 0..x within transaction
+	private int prevOutputIndex; // 0..x within transaction //which index in the output of prev TX
 	
 	public Input(String prevTxId, int prevOutputIndex) {
 		this.prevTxId = prevTxId;
